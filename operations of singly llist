@@ -1,0 +1,142 @@
+#include <iostream>
+
+using namespace std;
+
+// Node structure for a singly linked list
+class Node {
+    public:
+    int data;
+    Node* next;
+};
+
+// Function to insert a node at the beginning of the linked list
+void insertAtBeginning(Node* &head, int value) {
+    Node* newNode = new Node;
+    newNode->data = value;
+    newNode->next = head;
+    head = newNode;
+}
+
+// Function to delete the last node from the linked list
+void deleteEndNode(Node* &head) {
+    if (head == nullptr || head->next == nullptr) {
+        delete head;
+        head = nullptr;
+    }
+
+    Node* current = head;
+    while (current->next->next != nullptr) {
+        current = current->next;
+    }
+
+    delete current->next;
+    current->next = nullptr;
+
+}
+
+// Function to update a node with a specific value
+void updateNode(Node* head, int oldValue, int newValue) {
+    while (head != nullptr) {
+        if (head->data == oldValue) {
+            head->data = newValue;
+            cout << "Value updated in the list.\n";
+            return;
+        }
+        head = head->next;
+    }
+    cout << "Value not found in the list. Update failed.\n";
+}
+
+// Function to display the linked list
+void displayList(Node* head) {
+    cout << "Linked List: ";
+    while (head != nullptr) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+// Function to display the menu
+void displayMenu() {
+    cout << "\nSingly Linked List Operations\n";
+    cout << "1. Insert at Beginning\n";
+    cout << "2. Delete End Node\n";
+    cout << "3. Display List\n";
+    cout << "4. Update List\n";
+    cout << "5. Exit\n";
+    cout << "Enter your choice: ";
+}
+
+int main() {
+    Node* head = NULL;
+
+    int choice;
+    do {
+        displayMenu();
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                // Insert at Beginning
+                int value;
+                cout << "Enter the value to insert: ";
+                cin >> value;
+                insertAtBeginning(head, value);
+                cout << "Node inserted at the beginning.\n";
+                break;
+
+            case 2:
+                // Delete End Node
+                if (head != NULL) {
+                    deleteEndNode(head);
+                    cout << "Last node deleted.\n";
+                } else {
+                    cout << "List is empty. Cannot delete.\n";
+                }
+                break;
+
+            case 4:
+                // Update Node
+                if (head != nullptr) {
+                    int oldValue, newValue;
+                    cout << "Enter the value to update: ";
+                    cin >> oldValue;
+                    cout << "Enter the new value: ";
+                    cin >> newValue;
+                    updateNode(head, oldValue, newValue);
+                } else {
+                    cout << "List is empty. Cannot update.\n";
+                }
+                break;    
+
+
+            case 3:
+                // Display List
+                if (head != nullptr) {
+                    displayList(head);
+                } else {
+                    cout << "List is empty.\n";
+                }
+                break;
+
+            case 5:
+                // Exit
+                cout << "Exiting the program. Thank you!\n";
+                break;
+
+            default:
+                cout << "Invalid choice. Please enter a valid option.\n";
+        }
+
+    } while (choice != 5);
+
+    // Clean up allocated memory before exiting
+    while (head != nullptr) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+
+    return 0;
+}
